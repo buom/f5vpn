@@ -1,0 +1,64 @@
+# This is a default template for a post-install scriptlet.
+# Uncomment only required functions and remove any functions
+# you don't need (and this header).
+
+## arg 1:  the new package version
+pre_install() {
+	rm -rf /opt/f5/vpn/
+}
+
+## arg 1:  the new package version
+post_install() {
+	cd /opt/f5/vpn/
+	chown root /opt/f5/vpn/svpn
+	chmod 4755 /opt/f5/vpn/svpn
+	mkdir -p /usr/local/lib/F5Networks/SSLVPN/var/run
+	PATH=$PATH:/opt/f5/vpn/xdg-scripts
+	xdg-desktop-menu  install --novendor com.f5.f5vpn.desktop
+	xdg-icon-resource install --novendor --size 1024 /opt/f5/vpn/logos/1024x1024.png f5vpn
+	xdg-icon-resource install --novendor --size 512  /opt/f5/vpn/logos/512x512.png   f5vpn
+	xdg-icon-resource install --novendor --size 256  /opt/f5/vpn/logos/256x256.png   f5vpn
+	xdg-icon-resource install --novendor --size 128  /opt/f5/vpn/logos/128x128.png   f5vpn
+	xdg-icon-resource install --novendor --size 96   /opt/f5/vpn/logos/96x96.png     f5vpn
+	xdg-icon-resource install --novendor --size 64   /opt/f5/vpn/logos/64x64.png     f5vpn
+	xdg-icon-resource install --novendor --size 48   /opt/f5/vpn/logos/48x48.png     f5vpn
+	xdg-icon-resource install --novendor --size 32   /opt/f5/vpn/logos/32x32.png     f5vpn
+	xdg-icon-resource install --novendor --size 24   /opt/f5/vpn/logos/24x24.png     f5vpn
+	xdg-icon-resource install --novendor --size 16   /opt/f5/vpn/logos/16x16.png     f5vpn
+	cp -f com.f5.f5vpn.service /usr/share/dbus-1/services/
+	setcap cap_kill+ep /opt/f5/vpn/f5vpn
+}
+
+## arg 1:  the new package version
+## arg 2:  the old package version
+#pre_upgrade() {
+	# do something here
+#}
+
+## arg 1:  the new package version
+## arg 2:  the old package version
+#post_upgrade() {
+	# do something here
+#}
+
+## arg 1:  the old package version
+pre_remove() {
+	xdg-desktop-menu uninstall com.f5.f5vpn.desktop
+	xdg-icon-resource uninstall --size 1024 f5vpn
+	xdg-icon-resource uninstall --size 512  f5vpn
+	xdg-icon-resource uninstall --size 256  f5vpn
+	xdg-icon-resource uninstall --size 128  f5vpn
+	xdg-icon-resource uninstall --size 96   f5vpn
+	xdg-icon-resource uninstall --size 64   f5vpn
+	xdg-icon-resource uninstall --size 48   f5vpn
+	xdg-icon-resource uninstall --size 32   f5vpn
+	xdg-icon-resource uninstall --size 24   f5vpn
+	xdg-icon-resource uninstall --size 16   f5vpn
+	rm -f /usr/share/dbus-1/services/com.f5.f5vpn.service
+}
+
+## arg 1:  the old package version
+post_remove() {
+	rm -rf /usr/local/lib/F5Networks
+}
+
